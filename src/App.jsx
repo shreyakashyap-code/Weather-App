@@ -3,14 +3,28 @@ import WeatherCard from "./components/WeatherCard";
 import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
 import "./App.css";
+import axios from "axios";
 
 function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
+  const API_KEY = "7a86c20218e16322d46534a4d72d9db0";
   
-  const handleSearch = () => {
-    console.log(city);
-  };
+  const handleSearch = async () => {
+  if (!city.trim()) return;
+
+  try {
+    const res = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+    );
+
+    setWeather(res.data);
+    console.log(res.data);
+  } catch (error) {
+    alert("City not found");
+    console.log(error.response?.data);
+  }
+};
 
   return(
     <div className="app">

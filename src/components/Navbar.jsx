@@ -1,9 +1,13 @@
+import { FaCloudSun } from "react-icons/fa";
 function Navbar(){
     return(
         <nav className="navbar">
-            <h2>🌤 Weather App</h2>
+            <div className="logo">
+                <FaCloudSun/>
+                <h2>Weather App</h2>
+            </div>
 
-            <div>
+            <div className="nav-links">
                 <button>Home</button>
                 <button>About</button>
             </div>
