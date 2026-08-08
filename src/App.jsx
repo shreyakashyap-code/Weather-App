@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import WeatherCard from "./components/WeatherCard";
 import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
@@ -8,40 +8,113 @@ import axios from "axios";
 function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
+
   const API_KEY = import.meta.env.VITE_API_KEY;
-  
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleSearch = async () => {
-  if (!city.trim()) return;
+    if (!city.trim()) {
+      setError("Please enter a city name");
+      return;
+    }
 
-  try {
-    const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-    );
+    setLoading(true);
+    setError("");
+    setWeather(null);
 
-    setWeather(res.data);
-    console.log(res.data);
-  } catch (error) {
-    alert("City not found");
-    console.log(error.response?.data);
-  }
-};
+    try {
+      const res = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+      );
 
-  return(
+      setWeather(res.data);
+    } catch (err) {
+      console.log(err.response?.status);
+      console.log(err.response?.data);
+      setError("City Not Found");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
     <div className="app">
-      <Navbar/>
-      
-      <div className="hero">
-        <h1>Welcome to Weather App</h1>
-        <p>Get the latest weather information of any city.</p>
+      <Navbar />
 
-        <SearchBar 
-          city={city}
-          setCity={setCity}
-          handleSearch={handleSearch}
-        />
-        <WeatherCard weather={weather} />
+      <div className="hero">
+        {!weather && !loading && !error && (
+          <>
+            <h1>Welcome to Weather App</h1>
+
+            <p>
+              Get the latest weather information
+              <br />
+              of any city in the world.
+            </p>
+
+            <SearchBar
+              city={city}
+              setCity={setCity}
+              handleSearch={handleSearch}
+            />
+          </>
+        )}
+
+        {/* Loading State */}
+        {loading && (
+          <>
+            <h1>Get the latest weather</h1>
+
+            <p>information of any city.</p>
+
+            <SearchBar
+              city={city}
+              setCity={setCity}
+              handleSearch={handleSearch}
+            />
+
+            <div className="loading-box">
+              <div className="spinner"></div>
+
+              <h3>Fetching weather data...</h3>
+
+              <p>Please wait</p>
+            </div>
+          </>
+        )}
+
+        {/* Error State */}
+        {!loading && error && (
+        <>
+          <h1>Welcome to Weather App</h1>
+
+          <p>
+            Get the latest weather information
+            <br />
+            of any city in the world.
+          </p>
+
+          <SearchBar
+            city={city}
+            setCity={setCity}
+            handleSearch={handleSearch}
+          />
+
+          <div className="error-message">
+            ❌ {error}
+          </div>
+        </>
+)}
+
+        {/* Success State */}
+        {weather && !loading && !error && (
+          <WeatherCard weather={weather} />
+        )}
       </div>
     </div>
   );
 }
+
 export default App;

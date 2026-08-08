@@ -8,10 +8,10 @@ function Navbar(){
             </div>
 
             <div className="nav-links">
-                <button>Home</button>
-                <button>About</button>
+                <button>⌂ &nbsp; Home</button>
+                <button>ⓘ &nbsp; About</button>
             </div>
         </nav>
-    )
+    );
 }
 export default Navbar;

@@ -1,6 +1,7 @@
 function SearchBar({city, setCity, handleSearch}){
     return(
         <div className="search-box">
+            <span className="search-icon">⌕</span>
             <input 
               type="text"
               placeholder="Enter city..."
@@ -14,6 +15,6 @@ function SearchBar({city, setCity, handleSearch}){
             />
             <button onClick={handleSearch}>Search</button>
         </div>
-    )
+    );
 }
 export default SearchBar;
