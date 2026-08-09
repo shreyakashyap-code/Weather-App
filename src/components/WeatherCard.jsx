@@ -1,4 +1,8 @@
-function WeatherCard({ weather }) {
+function WeatherCard({
+  weather,
+  isFavorite,
+  toggleFavorite,
+}) {
   if (!weather) {
     return null;
   }
@@ -6,7 +10,10 @@ function WeatherCard({ weather }) {
   return (
     <div className="weather-card">
 
+      {/* TOP */}
+
       <div className="weather-top">
+
         <div>
           <h2>
             📍 {weather.name}, {weather.sys.country}
@@ -21,20 +28,44 @@ function WeatherCard({ weather }) {
           </p>
         </div>
 
-        <span className="star">☆</span>
+
+        {/* FAVORITE BUTTON */}
+
+        <button
+          className={`star ${
+            isFavorite ? "favorite" : ""
+          }`}
+          onClick={() =>
+            toggleFavorite(weather.name)
+          }
+        >
+          {isFavorite ? "★" : "☆"}
+        </button>
+
       </div>
+
+
+      {/* MAIN WEATHER */}
 
       <div className="main-weather">
 
         <div>
-          <h1>{Math.round(weather.main.temp)}°C</h1>
 
-          <h3>{weather.weather[0].main}</h3>
+          <h1>
+            {Math.round(weather.main.temp)}°C
+          </h1>
+
+          <h3>
+            {weather.weather[0].description}
+          </h3>
 
           <p>
-            Feels like {Math.round(weather.main.feels_like)}°C
+            Feels like{" "}
+            {Math.round(weather.main.feels_like)}°C
           </p>
+
         </div>
+
 
         <img
           src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
@@ -43,31 +74,43 @@ function WeatherCard({ weather }) {
 
       </div>
 
+
+      {/* WEATHER INFORMATION */}
+
       <div className="weather-info">
 
         <div>
           💧
           <span>
             <small>Humidity</small>
-            <strong>{weather.main.humidity}%</strong>
+            <strong>
+              {weather.main.humidity}%
+            </strong>
           </span>
         </div>
+
 
         <div>
           💨
           <span>
             <small>Wind Speed</small>
-            <strong>{weather.wind.speed} m/s</strong>
+            <strong>
+              {weather.wind.speed} m/s
+            </strong>
           </span>
         </div>
+
 
         <div>
           🌡️
           <span>
             <small>Pressure</small>
-            <strong>{weather.main.pressure} hPa</strong>
+            <strong>
+              {weather.main.pressure} hPa
+            </strong>
           </span>
         </div>
+
 
         <div>
           👁️

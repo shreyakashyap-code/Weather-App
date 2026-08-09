@@ -1,17 +1,34 @@
 import { FaCloudSun } from "react-icons/fa";
-function Navbar(){
-    return(
-        <nav className="navbar">
-            <div className="logo">
-                <FaCloudSun/>
-                <h2>Weather App</h2>
-            </div>
 
-            <div className="nav-links">
-                <button>⌂ &nbsp; Home</button>
-                <button>ⓘ &nbsp; About</button>
-            </div>
-        </nav>
-    );
+function Navbar({ onHome, onAbout, currentPage }) {
+  return (
+    <nav className="navbar">
+
+      <div className="logo">
+        <FaCloudSun />
+        <span>Weather App</span>
+      </div>
+
+      <div className="nav-links">
+
+        <button
+          onClick={onHome}
+          className={currentPage === "home" ? "active" : ""}
+        >
+          ⌂ &nbsp; Home
+        </button>
+
+        <button
+          onClick={onAbout}
+          className={currentPage === "about" ? "active" : ""}
+        >
+          ⓘ &nbsp; About
+        </button>
+
+      </div>
+
+    </nav>
+  );
 }
+
 export default Navbar;
