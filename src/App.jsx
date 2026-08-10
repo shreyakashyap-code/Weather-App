@@ -9,7 +9,6 @@ import Forecast from "./components/Forecast";
 import "./App.css";
 
 function App() {
-
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
 
@@ -22,7 +21,6 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState("home");
 
-
   // =========================
   // FAVORITES
   // =========================
@@ -32,7 +30,6 @@ function App() {
       JSON.parse(localStorage.getItem("favoriteCities")) || []
     );
   });
-
 
   // =========================
   // RECENT SEARCHES
@@ -44,71 +41,51 @@ function App() {
     );
   });
 
-
   const API_KEY = import.meta.env.VITE_API_KEY;
-
 
   // =========================
   // HOME BUTTON
   // =========================
 
   const goHome = () => {
-
     setCurrentPage("home");
-
     setWeather(null);
-
     setError("");
-
     setLoading(false);
-
     setCity("");
   };
-
 
   // =========================
   // ABOUT BUTTON
   // =========================
 
   const goAbout = () => {
-
     setCurrentPage("about");
-
     setWeather(null);
-
     setError("");
-
     setLoading(false);
   };
-
 
   // =========================
   // SEARCH
   // =========================
 
   const handleSearch = async () => {
-
     if (!city.trim()) {
-
       setError("Please enter a city name");
-
       return;
     }
 
     setCurrentPage("home");
-
     setLoading(true);
-
     setError("");
 
     try {
-
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
       );
 
       setWeather(res.data);
-
 
       // Recent Searches
 
@@ -125,7 +102,6 @@ function App() {
 
       ].slice(0, 5);
 
-
       setRecentSearches(updatedRecent);
 
       localStorage.setItem(
@@ -133,46 +109,35 @@ function App() {
         JSON.stringify(updatedRecent)
       );
 
-
       setCity(searchedCity);
 
     } catch (err) {
-
       console.log(err);
 
       setWeather(null);
-
       setError("City Not Found");
 
     } finally {
-
       setLoading(false);
     }
   };
-
 
   // =========================
   // SEARCH SAVED CITY
   // =========================
 
   const searchSavedCity = async (cityName) => {
-
     setCurrentPage("home");
-
     setCity(cityName);
-
     setLoading(true);
-
     setError("");
 
     try {
-
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
       );
 
       setWeather(res.data);
-
 
       const searchedCity = res.data.name;
 
@@ -187,7 +152,6 @@ function App() {
 
       ].slice(0, 5);
 
-
       setRecentSearches(updatedRecent);
 
       localStorage.setItem(
@@ -196,36 +160,28 @@ function App() {
       );
 
     } catch (err) {
-
       setWeather(null);
-
       setError("City Not Found");
 
     } finally {
-
       setLoading(false);
     }
   };
-
 
   // =========================
   // FAVORITE
   // =========================
 
   const toggleFavorite = (cityName) => {
-
     const exists = favoriteCities.some(
       (city) =>
         city.toLowerCase() ===
         cityName.toLowerCase()
     );
 
-
     let updatedFavorites;
 
-
     if (exists) {
-
       updatedFavorites = favoriteCities.filter(
         (city) =>
           city.toLowerCase() !==
@@ -233,16 +189,13 @@ function App() {
       );
 
     } else {
-
       updatedFavorites = [
         ...favoriteCities,
         cityName,
       ];
     }
 
-
     setFavoriteCities(updatedFavorites);
-
 
     localStorage.setItem(
       "favoriteCities",
@@ -250,29 +203,24 @@ function App() {
     );
   };
 
-
   // =========================
   // DELETE RECENT
   // =========================
 
   const deleteRecent = (cityName) => {
-
     const updatedRecent = recentSearches.filter(
       (city) =>
         city.toLowerCase() !==
         cityName.toLowerCase()
     );
 
-
     setRecentSearches(updatedRecent);
-
 
     localStorage.setItem(
       "recentSearches",
       JSON.stringify(updatedRecent)
     );
   };
-
 
   // =========================
   // CHECK FAVORITE
@@ -286,7 +234,6 @@ function App() {
       )
     : false;
 
-
   return (
     <div className="app">
 
@@ -299,7 +246,6 @@ function App() {
         onAbout={goAbout}
         currentPage={currentPage}
       />
-
 
       {/* =========================
           ABOUT PAGE
@@ -318,52 +264,52 @@ function App() {
               current weather of any city around the world.
             </p>
 
-
             <div className="about-features">
 
               <div>
                 <span>🌡️</span>
                 <h3>Current Weather</h3>
+
                 <p>
                   Temperature, feels like temperature,
                   humidity, pressure and visibility.
                 </p>
               </div>
 
-
               <div>
                 <span>🌧️</span>
                 <h3>Weather Conditions</h3>
+
                 <p>
                   See whether the weather is clear,
                   cloudy, rainy, snowy or stormy.
                 </p>
               </div>
 
-
               <div>
                 <span>📅</span>
                 <h3>5-Day Forecast</h3>
+
                 <p>
                   Check the upcoming weather forecast
                   for the next five days.
                 </p>
               </div>
 
-
               <div>
                 <span>⭐</span>
                 <h3>Favorite Cities</h3>
+
                 <p>
                   Save your favorite cities for quick
                   access whenever you need them.
                 </p>
               </div>
 
-
               <div>
                 <span>🕘</span>
                 <h3>Recent Searches</h3>
+
                 <p>
                   Quickly access your recently searched
                   cities.
@@ -371,7 +317,6 @@ function App() {
               </div>
 
             </div>
-
 
             <button
               className="about-home-btn"
@@ -386,7 +331,6 @@ function App() {
 
       )}
 
-
       {/* =========================
           HOME PAGE
       ========================= */}
@@ -394,7 +338,6 @@ function App() {
       {currentPage === "home" && (
 
         <main className="hero">
-
 
           {/* =========================
               NORMAL HOME
@@ -408,20 +351,17 @@ function App() {
                 Welcome to Weather App
               </h1>
 
-
               <p>
                 Get the latest weather information
                 <br />
                 of any city in the world.
               </p>
 
-
               <SearchBar
                 city={city}
                 setCity={setCity}
                 handleSearch={handleSearch}
               />
-
 
               {/* FAVORITES */}
 
@@ -432,7 +372,6 @@ function App() {
                   <h3>
                     ⭐ Favorite Cities
                   </h3>
-
 
                   <div className="home-city-list">
 
@@ -459,7 +398,6 @@ function App() {
 
               )}
 
-
               {/* RECENT */}
 
               {recentSearches.length > 0 && (
@@ -469,7 +407,6 @@ function App() {
                   <h3>
                     🕘 Recent Searches
                   </h3>
-
 
                   <div className="home-recent-list">
 
@@ -491,7 +428,6 @@ function App() {
                           >
                             🕘 {recentCity}
                           </button>
-
 
                           <button
                             className="delete-recent"
@@ -519,7 +455,6 @@ function App() {
 
           )}
 
-
           {/* =========================
               LOADING
           ========================= */}
@@ -536,13 +471,11 @@ function App() {
                 information of any city.
               </p>
 
-
               <SearchBar
                 city={city}
                 setCity={setCity}
                 handleSearch={handleSearch}
               />
-
 
               <div className="loading-box">
 
@@ -562,7 +495,6 @@ function App() {
 
           )}
 
-
           {/* =========================
               ERROR
           ========================= */}
@@ -581,13 +513,11 @@ function App() {
                 for the city you searched.
               </p>
 
-
               <SearchBar
                 city={city}
                 setCity={setCity}
                 handleSearch={handleSearch}
               />
-
 
               <div className="error-message">
                 ❌ {error}
@@ -596,7 +526,6 @@ function App() {
             </>
 
           )}
-
 
           {/* =========================
               WEATHER RESULT
@@ -612,7 +541,6 @@ function App() {
                 toggleFavorite={toggleFavorite}
               />
 
-
               <Forecast
                 weather={weather}
               />
@@ -624,6 +552,14 @@ function App() {
         </main>
 
       )}
+
+      {/* =========================
+          FOOTER
+      ========================= */}
+
+      <footer className="footer">
+        © 2026 Shreya Kashyap. All rights reserved.
+      </footer>
 
     </div>
   );
